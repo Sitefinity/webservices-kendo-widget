@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Query.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Query.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>﻿var OperatorType = require('./constants').OperatorType;
+var QueryBase = require('./QueryBase');
+var WhereQuery = require('./WhereQuery');
+var utils = require('./utils');
+var QueryBuilder = require('./QueryBuilder');
+var OrderProperty = require('./OrderProperty');
+
+/**
+ * @classdesc The query class is used for constructing queries.
+ * @class Query
+ * @augments QueryBase
+ * @example
+ * var query = new Sitefinity.Query();
+ * var query0 = query.where().and().endsWith("Title", "Record").done().or().startsWith('Title', 'asd').done().done();
+ * var query1 = query.where().or().endsWith("Record", "Title").ne('age', '15').eq('Content', 'test').done().done();
+ * var query2 = query.where().and().endsWith("Title", "Record").done().done();
+ * var query3 = query.where().endsWith("Record", "Title").or().ne('age', '15').eq('Content', 'test').done().done();
+ * var query4 = query.where().not().endsWith("Record", "Title").done().and().not().eq('Content', 'test').done().done().done();
+ * var query5 = query.where().not().and().endsWith("Record", "Title").eq('Content', 'test').done().done().done();
+ * var query6 = query.select("Id", "Title", "Content").expand('Tags').order("Title desc").where().ne('Title', 'zzz').eq('Title', 'newTitle').done()//.count();
+ * var query7 = query.order("Title desc").where().eq('Title', 'newTitleUPDATE1').done().select("Title", "Content");
+ * var query8 = query.where().eq('Title', 'newTitleN11').done();
+ */
+function Query() {
+    QueryBase.call(this);
+    this._order = null;
+    this._skip = null;
+    this._take = null;
+    this._count = null;
+    this.expr = null;
+}
+
+utils.inheritsFrom(Query, QueryBase);
+
+/**
+* Begins a where clause for filtering the items.
+* @memberOf Query
+* @returns {@link WhereQuery}
+*/
+Query.prototype.where = function (/*filter*/) {
+    var clone = this._clone(function (newObj) {
+        newObj.expr = new WhereQuery(newObj);
+    });
+
+    return clone.expr;
+}
+
+/**
+* Specifies the order by clause.
+* @memberOf Query
+* @example
+* // filter by single field
+* order("Title desc")
+* @example
+* // filter by multiple fields
+* order("Title desc", "Description asc")
+* @returns {@link Query}
+*/
+Query.prototype.order = function () {
+    var orderPropPaths = this._extractArguments(arguments);
+    this._validatePropertyPaths(orderPropPaths);
+
+    return this._clone(function (newObj) {
+        var orderItems = [];
+        for (var i = 0; i &lt; orderPropPaths.length; i++) {
+            var member = orderPropPaths[i];
+            var orderProp = new OrderProperty(member);
+            orderItems.push(orderProp);
+        }
+        newObj._order = orderItems;
+    });
+}
+
+
+/** Skips a certain number of items from the beginning before returning the rest of the items. Used for paging.
+* @memberOf Query.prototype
+* @method skip
+* @see [query.take]{@link query.take}
+* @param {number} value The number of items to skip.
+* @returns {Query}
+*/
+Query.prototype.skip = function (value) {
+    // validate
+    return this._clone(function (newObj) {
+        newObj._skip = value;
+    });
+}
+/** Takes a specified number of items from the query result. Used for paging.
+* @memberOf Query.prototype
+* @param {number} value The number of items to take.
+* @returns {Query}
+*/
+Query.prototype.take = function (value) {
+    return this._clone(function (newObj) {
+        newObj._take = value;
+    });
+}
+
+/** Returns the total item count with the result. Used for paging.
+* @memberOf Query.prototype
+* @returns {Query}
+*/
+Query.prototype.count = function () {
+    return this._clone(function (newObj) {
+        newObj._count = true;
+    });
+}
+
+Query.prototype._getFilter = function () {
+    return this.expr;
+}
+
+Query.prototype._getOrderBy = function () {
+    return this._order;
+}
+
+Query.prototype.build = function () {
+    return new QueryBuilder(this).build();
+}
+
+module.exports = Query;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Authentication.html">Authentication</a></li><li><a href="BatchRequest.html">BatchRequest</a></li><li><a href="Data.html">Data</a></li><li><a href="Query.html">Query</a></li><li><a href="QueryBase.html">QueryBase</a></li><li><a href="Sitefinity.html">Sitefinity</a></li><li><a href="Transaction.html">Transaction</a></li><li><a href="WhereQuery.html">WhereQuery</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Mon Mar 21 2016 17:28:39 GMT+0200 (FLE Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
