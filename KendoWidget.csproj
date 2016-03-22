@@ -778,36 +778,6 @@
     <Content Include="Mvc\Views\readme.txt" />
     <Content Include="Mvc\Views\Shared\readme.txt" />
     <Content Include="Silverlight.js" />
-    <Content Include="sitefinity-webservices-sdk\doc\Authentication.html" />
-    <Content Include="sitefinity-webservices-sdk\doc\Authentication.js.html" />
-    <Content Include="sitefinity-webservices-sdk\doc\BatchRequest.html" />
-    <Content Include="sitefinity-webservices-sdk\doc\BatchRequest.js.html" />
-    <Content Include="sitefinity-webservices-sdk\doc\Data.html" />
-    <Content Include="sitefinity-webservices-sdk\doc\Data.js.html" />
-    <Content Include="sitefinity-webservices-sdk\doc\fonts\OpenSans-Bold-webfont.svg" />
-    <Content Include="sitefinity-webservices-sdk\doc\fonts\OpenSans-BoldItalic-webfont.svg" />
-    <Content Include="sitefinity-webservices-sdk\doc\fonts\OpenSans-Italic-webfont.svg" />
-    <Content Include="sitefinity-webservices-sdk\doc\fonts\OpenSans-Light-webfont.svg" />
-    <Content Include="sitefinity-webservices-sdk\doc\fonts\OpenSans-LightItalic-webfont.svg" />
-    <Content Include="sitefinity-webservices-sdk\doc\fonts\OpenSans-Regular-webfont.svg" />
-    <Content Include="sitefinity-webservices-sdk\doc\index.html" />
-    <Content Include="sitefinity-webservices-sdk\doc\Query.html" />
-    <Content Include="sitefinity-webservices-sdk\doc\Query.js.html" />
-    <Content Include="sitefinity-webservices-sdk\doc\QueryBase.html" />
-    <Content Include="sitefinity-webservices-sdk\doc\QueryBase.js.html" />
-    <Content Include="sitefinity-webservices-sdk\doc\scripts\linenumber.js" />
-    <Content Include="sitefinity-webservices-sdk\doc\scripts\prettify\Apache-License-2.0.txt" />
-    <Content Include="sitefinity-webservices-sdk\doc\scripts\prettify\lang-css.js" />
-    <Content Include="sitefinity-webservices-sdk\doc\scripts\prettify\prettify.js" />
-    <Content Include="sitefinity-webservices-sdk\doc\Sitefinity.html" />
-    <Content Include="sitefinity-webservices-sdk\doc\Sitefinity.js.html" />
-    <Content Include="sitefinity-webservices-sdk\doc\styles\jsdoc-default.css" />
-    <Content Include="sitefinity-webservices-sdk\doc\styles\prettify-jsdoc.css" />
-    <Content Include="sitefinity-webservices-sdk\doc\styles\prettify-tomorrow.css" />
-    <Content Include="sitefinity-webservices-sdk\doc\Transaction.html" />
-    <Content Include="sitefinity-webservices-sdk\doc\WhereQuery.html" />
-    <Content Include="sitefinity-webservices-sdk\doc\WhereQuery.js.html" />
-    <Content Include="sitefinity-webservices-sdk\sitefinity-webservices-sdk.min.js" />
     <Content Include="Sitefinity\Default.aspx" />
     <Content Include="Sitefinity\Public\Services\Ecommerce\Order\CartOrder.svc" />
     <Content Include="Sitefinity\Public\Services\LoadBalancing\AzureSystemWebService.svc" />
@@ -936,42 +906,6 @@
   <ItemGroup>
     <Content Include="Mvc\Views\Kendo\Index.cshtml" />
     <Content Include="Mvc\Views\Shared\_Layout.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="sitefinity-webservices-sdk\doc\fonts\OpenSans-Regular-webfont.woff" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="sitefinity-webservices-sdk\doc\fonts\OpenSans-Regular-webfont.eot" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="sitefinity-webservices-sdk\doc\fonts\OpenSans-Light-webfont.woff" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="sitefinity-webservices-sdk\doc\fonts\OpenSans-Light-webfont.eot" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="sitefinity-webservices-sdk\doc\fonts\OpenSans-LightItalic-webfont.woff" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="sitefinity-webservices-sdk\doc\fonts\OpenSans-LightItalic-webfont.eot" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="sitefinity-webservices-sdk\doc\fonts\OpenSans-Italic-webfont.woff" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="sitefinity-webservices-sdk\doc\fonts\OpenSans-Italic-webfont.eot" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="sitefinity-webservices-sdk\doc\fonts\OpenSans-Bold-webfont.woff" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="sitefinity-webservices-sdk\doc\fonts\OpenSans-Bold-webfont.eot" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="sitefinity-webservices-sdk\doc\fonts\OpenSans-BoldItalic-webfont.woff" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="sitefinity-webservices-sdk\doc\fonts\OpenSans-BoldItalic-webfont.eot" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
