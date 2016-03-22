@@ -1,0 +1,49 @@
+@model SitefinityWebApp.Mvc.Models.Kendo.GridSampleModel
+@using Telerik.Sitefinity.Frontend.Mvc.Helpers;
+@{
+    //Layout = "~/Mvc/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = Model.Title;
+}
+    
+    @Html.Script(Telerik.Sitefinity.Modules.Pages.ScriptRef.JQuery, "head")
+    @Html.Script(Telerik.Sitefinity.Modules.Pages.ScriptRef.KendoAll, "head")
+    @Html.Script("~/sitefinity-webservices-sdk/sitefinity-webservices-sdk.min.js", "head")
+
+    <script type="text/javascript" src="~/Mvc/Scripts/Kendo/GridSample.js"></script>
+    <script type="text/x-kendo-template" id="template">
+        <div id="details-container">
+            <h2>#= Title #</h2>
+            <em>#= Content #</em>
+            <dl>
+                <dt>Summary: #= Summary #</dt>
+                <br />
+                <dt>Id: #= Id #</dt>
+            </dl>
+        </div>
+    </script>
+
+
+
+    @Html.StyleSheet(Url.EmbeddedResource("Telerik.Sitefinity.Resources.Reference", "Telerik.Sitefinity.Resources.Scripts.Kendo.styles.kendo_common_min.css"))
+    @Html.StyleSheet(Url.EmbeddedResource("Telerik.Sitefinity.Resources.Reference", "Telerik.Sitefinity.Resources.Scripts.Kendo.styles.kendo_default_min.css"))
+    <style type="text/css">
+        #details-container {
+            padding: 10px;
+        }
+
+            #details-container h2 {
+                margin: 0;
+            }
+
+            #details-container em {
+                color: #8c8c8c;
+            }
+
+            #details-container dt {
+                margin: 0;
+                display: inline;
+            }
+    </style>
+
+<div id="gridView"></div>
+<div id="details"></div>
