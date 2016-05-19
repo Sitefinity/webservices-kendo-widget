@@ -1,10 +1,10 @@
 # webservices-kendo-widget
 
-The sample illustrates how to use the built-in kendo transport of the client sdk. The transport is passed to the kendo datasource, which internally will use the web-services sdk to query the sitefinity services.
+The sample illustrates how to use the built-in kendo transport of the client sdk. The transport is passed to the kendo datasource, which internally will use the web-services sdk to query the Sitefinity CMS services.
 
 ### Requirements
 
-* Sitefinity license
+* Sitefinity CMS license
 * .NET Framework 4
 * Visual Studio 2012
 * Microsoft SQL Server 2008R2 or later versions
