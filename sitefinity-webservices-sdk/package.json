@@ -1,6 +1,6 @@
 {
   "name": "sitefinity-webservices-sdk",
-  "version": "0.1.3-beta",
+  "version": "0.1.6-beta",
   "devDependencies": {
     "grunt": "~0.4.5",
     "grunt-browserify": "^4.0.1",

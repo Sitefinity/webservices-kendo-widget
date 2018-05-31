@@ -29,6 +29,7 @@
             <pre class="prettyprint source linenums"><code>﻿var CreateRequest = require('./Request').CreateRequest;
 var UpdateRequest = require('./Request').UpdateRequest;
 var UploadRequest = require('./Request').UploadRequest;
+var OperationRequest = require('./Request').OperationRequest;
 var RequestBase = require('./Request').RequestBase;
 var CreateRelatedRequest = require('./Request').CreateRelatedRequest;
 var utils = require('./utils');
@@ -76,7 +77,7 @@ Transaction.prototype.create = function (parameters) {
 
     var options = {
         urlOptions: urlOptions,
-        data: parameters.data
+        data: JSON.stringify(parameters.data)
     };
 
     var request = this._factory.create(options);
@@ -85,10 +86,37 @@ Transaction.prototype.create = function (parameters) {
 }
 
 /**
+* Adds a POST request to execute an operation on single item.
+* @memberOf Transaction
+* @instance
+* @param {object} parameters - The parameters for the request.
+* @param {string} parameters.key - The identifier of the item to be updated.
+* @param {object} parameters.data - The payload of the request.
+*/
+Transaction.prototype.operation = function (parameters) {
+    if (!(parameters || parameters.entitySet || parameters.key || parameters.data))
+        throw "parameters: entitySet, key and data are required!";
+
+    var urlOptions = this.urlParametersClone(parameters.entitySet);
+
+    var options = {
+        urlOptions: urlOptions,
+        key: parameters.key,
+        data: JSON.stringify(parameters.data)
+    };
+
+    var request = this._factory.operation(options);
+
+    this._overrideUrlGeneration(request, parameters.key, 'operation');
+    this.addRequest(this, request);
+}
+
+/**
 * Adds a PATCH request to update a single item.
 * @memberOf Transaction
 * @instance
 * @param {object} parameters - The parameters for the request.
+* @param {bool} parameters.saveTemp - A flag indicating whether to save in temp.
 * @param {string} parameters.key - The identifier of the item to be updated.
 * @param {object} parameters.data - The payload of the request.
 */
@@ -100,14 +128,14 @@ Transaction.prototype.update = function (parameters) {
 
     var options = {
         urlOptions: urlOptions,
+        saveTemp: parameters.saveTemp,
         key: parameters.key,
-        data: parameters.data
+        data: JSON.stringify(parameters.data)
     };
 
     var request = this._factory.update(options);
 
     this._overrideUrlGeneration(request, parameters.key);
-
     this.addRequest(this, request);
 }
 
@@ -220,21 +248,27 @@ Transaction.prototype.createRelated = function (parameters) {
         urlOptions: urlOptions,
         key: parameters.key,
         navigationProperty: parameters.navigationProperty,
-        data: data
+        data: JSON.stringify(data)
     };
 
     var request = this._factory.createRelated(options);
-
-    this._overrideUrlGeneration(request, parameters.key);
+    var navigationPropertyURL = request.navigationProperty + '/$ref';
+    this._overrideUrlGeneration(request, parameters.key, navigationPropertyURL);
 
     return this.addRequest(this, request);
 }
-Transaction.prototype._overrideUrlGeneration = function (request, key) {
+Transaction.prototype._overrideUrlGeneration = function (request, key, additionalPropertyURL) {
     // TODO: match requests with Content-ID's!
     // Content-ID's are the same as id's in _requests.
     for (var req in this._requests) {
         if (this._requests[req].id == key) {
-            request._buildUrl = function () { return "$" + key}
+            request._buildUrl = function () {
+                var uri = "$" + key;
+                if(additionalPropertyURL !== undefined)
+                    return uri + '/' + additionalPropertyURL;
+                else
+                    return uri;
+            }
         }
     }
 }
@@ -449,6 +483,7 @@ BatchRequest.prototype._parseResponse = function (http) {
         boundaries: []
     };
 
+    var batchIsSuccessful = true;
     var pos = context.position;
     var partHeaders = this._readHeaders(http.getAllResponseHeaders(), context);
     var partContentType = this._contentType(partHeaders["Content-Type"]);
@@ -463,13 +498,30 @@ BatchRequest.prototype._parseResponse = function (http) {
             var changesets = response[i].__changeResponses;
             if (changesets) {
                 var changesetResult = [];
+                var changeSetIsSuccessful = true;
                 for (var change in changesets) {
-                    changesetResult.push({ data: (changesets[change].response.body.length > 0) ? JSON.parse(changesets[change].response.body) : changesets[change].response.body, statusCode: changesets[change].response.statusCode, headers: changesets[change].response.headers });
+                    var data = (changesets[change].response.body.length > 0) ? JSON.parse(changesets[change].response.body) : changesets[change].response.body;
+                    utils._convertToDateObject(data);
+                    if (changesets[change].response.statusCode >= 400) {
+                        batchIsSuccessful = false;
+                        changeSetIsSuccessful = false;
+                    }
+
+                    changesetResult.push({ data: data, statusCode: changesets[change].response.statusCode, headers: changesets[change].response.headers });
                 }
-                responseParsed.push(changesetResult);
+                responseParsed.push({ isSuccessful: changeSetIsSuccessful, response: changesetResult });
             }
-            else
-                responseParsed.push({ data: JSON.parse(response[i].response.body), statusCode: response[i].response.statusCode, headers: response[i].response.headers });
+            else {
+                var data = JSON.parse(response[i].response.body);
+                utils._convertToDateObject(data);
+                var requestIsSuccessful = true;
+                if (response[i].response.statusCode >= 400) {
+                    batchIsSuccessful = false;
+                    requestIsSuccessful = false;
+                }
+
+                responseParsed.push({ isSuccessful: requestIsSuccessful, response: { data: data, statusCode: response[i].response.statusCode, headers: response[i].response.headers }});
+            }
         }
         catch (e) {
             // TODO: why continue ?
@@ -477,7 +529,7 @@ BatchRequest.prototype._parseResponse = function (http) {
         }
     }
 
-    return responseParsed;
+    return { data: responseParsed, isSuccessful: batchIsSuccessful };
 }
 
 BatchRequest.prototype._parseBatchResponse = function (text, context) {
@@ -685,7 +737,7 @@ BatchRequest.prototype._buildTransaction = function (transaction) {
         requestBody += BatchRequest.constants.newLine + 'Content-ID: ' + changesetRequests[reqIndex].id;
 
         var requestUrl = currentRequest._buildUrl();
-        requestBody += '\r\n\r\n' + currentRequest._getMethod() + ' ' + requestUrl + ((currentRequest instanceof CreateRelatedRequest) ? '/' + currentRequest.navigationProperty + '/$ref' : '') + ' HTTP/1.1';
+        requestBody += '\r\n\r\n' + currentRequest._getMethod() + ' ' + requestUrl /*+ ((currentRequest instanceof CreateRelatedRequest) ? '/' + currentRequest.navigationProperty + '/$ref' : '')*/ + ' HTTP/1.1';
 
         // TODO: each method should have a toString()
         if (currentRequest instanceof CreateRequest || currentRequest instanceof UpdateRequest) {
@@ -694,9 +746,10 @@ BatchRequest.prototype._buildTransaction = function (transaction) {
                 requestBody += BatchRequest.constants.newLine + 'X-File-Name: ' + currentRequest.fileName;
                 requestBody += BatchRequest.constants.newLine + 'Content-Encoding: base64';
             }
-            else
+            else {
                 requestBody += BatchRequest.constants.newLine + RequestBase.headers.contentType + ": " + RequestBase.contentTypes.json;
-
+                currentRequest.saveTemp ? requestBody += BatchRequest.constants.newLine + 'X-Operation' + ": SaveTemp" : undefined;
+            }
             requestBody += '\r\n\r\n' + currentRequest.data;
         }
     }
@@ -743,7 +796,7 @@ module.exports = BatchRequest;</code></pre>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu May 26 2016 16:27:13 GMT+0300 (FLE Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.1</a> on Mon Oct 03 2016 11:21:41 GMT+0300 (FLE Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

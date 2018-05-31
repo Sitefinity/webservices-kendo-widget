@@ -163,7 +163,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="BatchRequest.js.html">BatchRequest.js</a>, <a href="BatchRequest.js.html#line8">line 8</a>
+        <a href="BatchRequest.js.html">BatchRequest.js</a>, <a href="BatchRequest.js.html#line9">line 9</a>
     </li></ul></dd>
     
 
@@ -361,7 +361,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="BatchRequest.js.html">BatchRequest.js</a>, <a href="BatchRequest.js.html#line43">line 43</a>
+        <a href="BatchRequest.js.html">BatchRequest.js</a>, <a href="BatchRequest.js.html#line44">line 44</a>
     </li></ul></dd>
     
 
@@ -564,7 +564,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="BatchRequest.js.html">BatchRequest.js</a>, <a href="BatchRequest.js.html#line174">line 174</a>
+        <a href="BatchRequest.js.html">BatchRequest.js</a>, <a href="BatchRequest.js.html#line202">line 202</a>
     </li></ul></dd>
     
 
@@ -751,7 +751,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="BatchRequest.js.html">BatchRequest.js</a>, <a href="BatchRequest.js.html#line93">line 93</a>
+        <a href="BatchRequest.js.html">BatchRequest.js</a>, <a href="BatchRequest.js.html#line121">line 121</a>
     </li></ul></dd>
     
 
@@ -954,7 +954,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="BatchRequest.js.html">BatchRequest.js</a>, <a href="BatchRequest.js.html#line119">line 119</a>
+        <a href="BatchRequest.js.html">BatchRequest.js</a>, <a href="BatchRequest.js.html#line147">line 147</a>
     </li></ul></dd>
     
 
@@ -1180,7 +1180,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="BatchRequest.js.html">BatchRequest.js</a>, <a href="BatchRequest.js.html#line147">line 147</a>
+        <a href="BatchRequest.js.html">BatchRequest.js</a>, <a href="BatchRequest.js.html#line175">line 175</a>
     </li></ul></dd>
     
 
@@ -1211,14 +1211,14 @@
 
     
 
-    <h4 class="name" id="update"><span class="type-signature"></span>update<span class="signature">(parameters)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="operation"><span class="type-signature"></span>operation<span class="signature">(parameters)</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Adds a PATCH request to update a single item.
+    Adds a POST request to execute an operation on single item.
 </div>
 
 
@@ -1383,7 +1383,233 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="BatchRequest.js.html">BatchRequest.js</a>, <a href="BatchRequest.js.html#line67">line 67</a>
+        <a href="BatchRequest.js.html">BatchRequest.js</a>, <a href="BatchRequest.js.html#line68">line 68</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="update"><span class="type-signature"></span>update<span class="signature">(parameters)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Adds a PATCH request to update a single item.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>parameters</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The parameters for the request.
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>saveTemp</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">bool</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">A flag indicating whether to save in temp.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The identifier of the item to be updated.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The payload of the request.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="BatchRequest.js.html">BatchRequest.js</a>, <a href="BatchRequest.js.html#line95">line 95</a>
     </li></ul></dd>
     
 
@@ -1431,7 +1657,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu May 26 2016 16:27:13 GMT+0300 (FLE Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.1</a> on Mon Oct 03 2016 11:21:41 GMT+0300 (FLE Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>
