@@ -1,22 +1,43 @@
-# Webservices: Kendo widget
+Telerik.Sitefinity.Web.Services.Samples.KendoWidget
+===================================================
 
-### Latest supported version: Sitefinity CMS 11.0.6700.0
+>**Latest supported version**: Sitefinity CMS 11.0.6700.0
+
+>**Documentation articles**: [For developers: Client-side programming and Web services](http://docs.sitefinity.com/for-developers-client-side-programming-and-web-services)
+
+### Overview
 
 The sample illustrates how to use the built-in kendo transport of the client sdk. The transport is passed to the kendo datasource, which internally will use the web-services sdk to query the Sitefinity CMS services.
 
-### Requirements
-
-You must have a Sitefinity CMS license
-
-For more information, see the [System requirements](https://docs.sitefinity.com/system-requirements) for the  respective Sitefinity CMS version.
-
 ### Prerequisites
 
-Clear the NuGet cache files. To do this:
+- You must have a Sitefinity CMS license.
+- Your setup must comply with the system requirements.  
+ For more information, see the [System requirements](https://docs.sitefinity.com/system-requirements) for the  respective Sitefinity CMS version.
 
-1. In Windows Explorer, open the **%localappdata%\NuGet\Cache** folder.
-2. Select all files and delete them.
+### Installation
 
-### Nuget package restoration
-The solution in this repository relies on NuGet packages with automatic package restore while the build procedure takes place.   
-For a full list of the referenced packages and their versions see the [packages.config](https://github.com/Sitefinity-SDK/webservices-kendo-widget/blob/master/packages.config) file.
+1. Clear the NuGet cache files.  
+ a. Open the `BugTracker` solution file in Visual Studio.  
+ b. In the toolbar, navigate to _Tools >> NuGet Package Manager >> Package Manager Settings_.  
+ c. In the left pane, navigate to _NuGet Package Manager >> General_.  
+ d. Click _Clear All NuGet Cache(s)_.
+2. Restore the NuGet packages in the solution.  
+   
+   >**NOTE**: The solution in this repository relies on NuGet packages with automatic package restore while the build procedure takes place.   
+   >For a full list of the referenced packages and their versions see the [packages.config](https://github.com/Sitefinity-SDK/Telerik.Sitefinity.Samples.BugTracker/blob/master/SitefinityWebApp/packages.config) file.    
+   >For a history and additional information related to package versions on different releases of this repository, see the [Releases page](https://github.com/Sitefinity-SDK/Telerik.Sitefinity.Samples.BugTracker/releases).
+   >  
+   a. Navigate to _Tools >> NuGet Package Manager >> Package Manager Console_.  
+   b. In _Source_, select Sitefinity CMS NuGet Repository.  
+   c. Click _Restore_ button.
+
+### Login
+
+1. In the context menu of SitefinityWebApp, click _View >> View in Browser_.  
+ After the project initializes, the _License activation_ page appears.
+2. Activate your license.  
+ For more information, see [Activate a license](http://docs.sitefinity.com/activate-a-license).
+3. To login into the Sitefinity CMS backend, use the following credentials:  
+ **Username:** admin  
+ **Password:** password
