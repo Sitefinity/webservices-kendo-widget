@@ -14,6 +14,12 @@ The sample illustrates how to use the built-in kendo transport of the client sdk
 - You must have a Sitefinity CMS license.
 - Your setup must comply with the system requirements.  
  For more information, see the [System requirements](https://docs.sitefinity.com/system-requirements) for the  respective Sitefinity CMS version.
+- A user with the credentials (or change these in the DataImporter.cs file) -> 
+	email: admin@test.com
+	pass: password
+
+- Follow the steps from 1 to 10 to setup authentication in Sitefinity as described here -> https://docs.sitefinity.com/request-access-token-for-calling-web-services
+
 
 ### Installation
 
