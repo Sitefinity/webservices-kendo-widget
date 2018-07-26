@@ -6,69 +6,85 @@
         serviceUrl: window.location.origin + "/api/default/"
     }
 
-    // create the Sitefinity object for managing data
-    var sf = new Sitefinity(options);
+ 	// login the user
 
-	// login the user
-    sf.authentication.login("admin", "admin@2", function (data) {
-		// create the kendo data source for accessing data.
-        var sitefinityDataSource = new kendo.data.DataSource({
-            // the SDK has a custom kendo transport for accessing the Sitefinity OData services.
-            // internally it uses the sitefinity-webservices-sdk to query the services
-            type: 'sitefinity',
-            transport: {
-                urlName: 'newsitems',
-                providerName: 'OpenAccessDataProvider',
-                dataProvider: sf
-            },
-            schema: {
-                model: {
-                    id: "Id",
-                    fields: {
-                        Id: { type: "string" },
-                        Title: { type: "string" },
-                        Content: { type: "string" },
-                        Summary: { type: 'string' },
-                        UrlName: { type: 'string' }
-                    }
-                }
-            },
-            serverPaging: false,
-            serverSorting: true,
-            serverFiltering: true,
-            pageSize: 10,
-            page: 1,
-            sort: { field: 'Id', dir: 'desc' }
+    getToken().then((data) => {
+
+        getData(data.access_token).then((data) => {
+            // create the kendo grid
+            $("#gridView").kendoGrid({
+                pageable: true,
+                sortable: true,
+                filterable: true,
+                navigatable: true,
+                dataSource: data,
+                toolbar: ["create", "save", "cancel"],
+                columns: ["Title", "Content", "Summary", { command: ["edit", "destroy", { text: "View Details", click: showDetails }], title: "&nbsp;", width: "300px" }],
+                editable: "inline"
+            });
         });
-
-		// create the kendo grid
-        $("#gridView").kendoGrid({
-            pageable: true,
-            sortable: true,
-            filterable: true,
-            navigatable: true,
-            dataSource: sitefinityDataSource,
-            toolbar: ["create", "save", "cancel"],
-            columns: ["Title", "Content", "Summary", { command: ["edit", "destroy", { text: "View Details", click: showDetails }], title: "&nbsp;", width: "300px" }],
-            editable: "inline"
-        });
-
-        wnd = $("#details")
-                .kendoWindow({
-                    title: "News Details",
-                    modal: true,
-                    visible: false,
-                    resizable: false,
-                    width: 300
-                }).data("kendoWindow");
-        detailsTemplate = kendo.template($("#template").html());
     });
 
+    wnd = $("#details")
+            .kendoWindow({
+                title: "News Details",
+                modal: true,
+                visible: false,
+                resizable: false,
+                width: 300
+            }).data("kendoWindow");
+    detailsTemplate = kendo.template($("#template").html());
     function showDetails(e) {
         e.preventDefault();
 
         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
         wnd.content(detailsTemplate(dataItem));
         wnd.center().open();
+    }
+
+
+    function getToken() {
+        var promise = new Promise((resolve, reject) => {
+            var tokenEndPoint = window.location.origin + "/Sitefinity/Authenticate/OpenID/connect/token";
+            $.ajax({
+                url: tokenEndPoint,
+                data: {
+                    username: "admin@test.com",
+                    password: "password",
+                    grant_type: 'password',
+                    scope: 'openid offline_access',
+                    client_id: "testApp",
+                    client_secret: "secret"
+                },
+                method: 'POST',
+                success: function (data) {
+                    resolve(data);
+                },
+                error: function (err) {
+                    alert(err.responseText);
+                }
+            })
+        });
+
+        return promise;
+    }
+
+    function getData(token) {
+        var promise = new Promise((resolve, reject) => {
+            var apiEndPoint = window.location.origin + "/api/default/newsitems";
+            $.ajax({
+                url: apiEndPoint,
+                method: 'GET',
+                headers: { "Authorization": "Bearer " + token },
+                success: function (data) {
+                    resolve(data.value);
+                },
+                error: function (err) {
+                    alert(err.responseText);
+                }
+            })
+        });
+
+        return promise;
     }
 });
