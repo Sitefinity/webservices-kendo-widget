@@ -205,3 +205,4 @@ FakesAssemblies/
 *.log
 *.pdb
 *.lic
+/App_Data/Sitefinity
