@@ -849,6 +849,9 @@
     <Content Include="Mvc\Controllers\readme.txt" />
     <Content Include="Mvc\Models\readme.txt" />
     <Content Include="Mvc\Scripts\Kendo\GridSample.js" />
+    <Content Include="Mvc\Scripts\Kendo\kendo-transport.js" />
+    <Content Include="Mvc\Scripts\Kendo\sitefinity-webservices-sdk.js" />
+    <Content Include="Mvc\Scripts\Kendo\sitefinity-webservices-sdk.min.js" />
     <Content Include="Mvc\Views\readme.txt" />
     <Content Include="Mvc\Views\Shared\readme.txt" />
     <Content Include="ResourcePackages\Bootstrap\assets\dist\css\main.css" />

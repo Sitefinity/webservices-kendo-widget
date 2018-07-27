@@ -6,33 +6,65 @@
         serviceUrl: window.location.origin + "/api/default/"
     }
 
- 	// login the user
-
+    // login the user
     getToken().then((data) => {
 
-        getData(data.access_token).then((data) => {
-            // create the kendo grid
-            $("#gridView").kendoGrid({
-                pageable: true,
-                sortable: true,
-                filterable: true,
-                navigatable: true,
-                dataSource: data,
-                toolbar: ["create", "save", "cancel"],
-                columns: ["Title", "Content", "Summary", { command: ["edit", "destroy", { text: "View Details", click: showDetails }], title: "&nbsp;", width: "300px" }],
-                editable: "inline"
-            });
+        // get the web service url and pass it to the Sitefinity object
+        var wnd, detailsTemplate;
+        var options = {
+            serviceUrl: window.location.origin + "/api/default/"
+        }
+
+        // create the Sitefinity object for managing data
+        var sf = new window.Sitefinity(options);
+        sf.authentication.setToken(data);
+        var sitefinityDataSource = new kendo.data.DataSource({
+            type: 'sitefinity',
+            transport: {
+                urlName: 'newsitems',
+                providerName: 'OpenAccessDataProvider',
+                dataProvider: sf
+            },
+            schema: {
+                model: {
+                    id: "Id",
+                    fields: {
+                        Id: { type: "string" },
+                        Title: { type: "string" },
+                        Content: { type: "string" },
+                        Summary: { type: 'string' },
+                        UrlName: { type: 'string' }
+                    }
+                }
+            },
+            serverPaging: false,
+            serverSorting: true,
+            serverFiltering: true,
+            pageSize: 2,
+            page: 1,
+            sort: { field: 'Id', dir: 'desc' }
+        });
+
+        $("#gridView").kendoGrid({
+            pageable: true,
+            sortable: true,
+            filterable: true,
+            navigatable: true,
+            dataSource: sitefinityDataSource,
+            toolbar: ["create", "save", "cancel"],
+            columns: ["Title", "Content", "Summary", "UrlName", { command: ["edit", "destroy", { text: "View Details", click: showDetails }], title: "&nbsp;", width: "300px" }],
+            editable: "inline"
         });
     });
 
-    wnd = $("#details")
-            .kendoWindow({
-                title: "News Details",
-                modal: true,
-                visible: false,
-                resizable: false,
-                width: 300
-            }).data("kendoWindow");
+    wnd = $("#details").kendoWindow({
+        title: "News Details",
+        modal: true,
+        visible: false,
+        resizable: false,
+        width: 300
+    }).data("kendoWindow");
+
     detailsTemplate = kendo.template($("#template").html());
     function showDetails(e) {
         e.preventDefault();
@@ -58,7 +90,10 @@
                 },
                 method: 'POST',
                 success: function (data) {
-                    resolve(data);
+                    resolve({
+                        type: data.token_type,
+                        value: data.access_token
+                    });
                 },
                 error: function (err) {
                     alert(err.responseText);
